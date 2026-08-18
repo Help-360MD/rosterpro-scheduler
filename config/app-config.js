@@ -10,7 +10,7 @@ window.RosterProConfig = {
   },
   performance: {
     hoursHistoryPageSize: 250,
-    apiTimeoutMs: 18000,
+    apiTimeoutMs: 40000,
     apiRetryAttempts: 3
   }
 };
