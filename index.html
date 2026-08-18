@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RosterPro - Stetho MD</title>
+  <link rel="stylesheet" href="css/styles.css?v=20260630-sheet-authority">
+</head>
+<body>
+  <section id="loginView" class="login-shell">
+    <div class="login-panel">
+      <div class="login-logo-stack">
+        <img data-logo="clinic" src="assets/stetho-md.jpg" alt="Stetho MD">
+        <img class="product-logo" data-logo="product" src="assets/rosterpro-logo.jpg" alt="RosterPro">
+        <img data-logo="partner" src="assets/help360-md.png" alt="Help360 MD">
+      </div>
+      <h1 class="login-title" data-brand="tool">RosterPro</h1>
+      <p class="login-subtitle"><span data-brand="clinic">Stetho MD</span> staff duty schedule and staff information management.</p>
+      <form id="loginForm" class="auth-form">
+        <label class="field">
+          <span>Username</span>
+          <input id="username" class="input" autocomplete="username" required>
+        </label>
+        <label class="field">
+          <span>Password</span>
+          <input id="password" class="input" type="password" autocomplete="current-password" required>
+        </label>
+        <div class="inline-controls">
+          <label class="check-row"><input id="togglePassword" type="checkbox"> Show password</label>
+          <label class="check-row"><input id="rememberMe" type="checkbox"> Remember me</label>
+        </div>
+        <p id="loginError" class="pill red" hidden></p>
+        <button class="primary-btn" type="submit">Sign In</button>
+        <button id="forgotPasswordBtn" class="ghost-btn" type="button">Forgot Password?</button>
+      </form>
+      <form id="setPasswordForm" class="auth-form" hidden>
+        <p class="help-text">Temporary password accepted. Set a new password to continue.</p>
+        <label class="field">
+          <span>New Password</span>
+          <input id="newPassword" class="input" type="password" autocomplete="new-password" minlength="8" required>
+        </label>
+        <label class="field">
+          <span>Confirm New Password</span>
+          <input id="confirmNewPassword" class="input" type="password" autocomplete="new-password" minlength="8" required>
+        </label>
+        <p id="setPasswordError" class="pill red" hidden></p>
+        <button class="primary-btn" type="submit">Set New Password</button>
+        <button id="backToLoginBtn" class="ghost-btn" type="button">Back to Sign In</button>
+      </form>
+      <p class="help-text" style="margin-top:18px">Powered and managed by <strong data-brand="powered">Help360 MD</strong>. For help call <a data-brand="phone" href="tel:3219999553">(321) 999-9553</a>.</p>
+    </div>
+  </section>
+
+  <section id="appShell" class="app-shell" hidden>
+    <aside class="sidebar print-hide">
+      <div class="brand-block">
+        <div class="brand-mark">
+          <img data-logo="product" src="assets/rosterpro-logo.jpg" alt="RosterPro">
+          <div class="brand-copy">
+            <strong data-brand="tool">RosterPro</strong>
+            <span data-brand="clinic">Stetho MD</span>
+          </div>
+        </div>
+        <div class="partner-row">
+          <img data-logo="clinic" src="assets/stetho-md.jpg" alt="Stetho MD">
+          <img data-logo="partner" src="assets/help360-md.png" alt="Help360 MD">
+        </div>
+      </div>
+      <nav class="nav-list" aria-label="Primary">
+        <button class="nav-btn active" data-view="dashboard"><span class="nav-token">D</span>Dashboard</button>
+        <button class="nav-btn" data-view="staff"><span class="nav-token">S</span>Staff</button>
+        <button class="nav-btn" data-view="schedule"><span class="nav-token">C</span>Schedule</button>
+        <button class="nav-btn" data-view="hours"><span class="nav-token">H</span>Hours</button>
+        <button class="nav-btn" data-view="locations"><span class="nav-token">L</span>Locations</button>
+        <button class="nav-btn" data-view="reports"><span class="nav-token">R</span>Reports</button>
+        <button class="nav-btn" data-view="settings"><span class="nav-token">G</span>Settings</button>
+      </nav>
+      <div class="support-box">
+        <strong>Need help?</strong>
+        <span>Managed by <span data-brand="powered">Help360 MD</span></span>
+        <a data-brand="phone" href="tel:3219999553">(321) 999-9553</a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar print-hide">
+        <div>
+          <h2 id="pageTitle" class="page-title">Dashboard</h2>
+          <p id="pageKicker" class="page-kicker">Workforce snapshot</p>
+        </div>
+        <div class="toolbar">
+          <span id="syncStatusPill" class="pill sync-pill"><span class="sync-dot"></span>Synced</span>
+          <label class="check-row"><input id="darkModeToggle" type="checkbox"> Dark mode</label>
+          <span class="pill"><span id="currentUserName"></span> - <span id="currentUserRole"></span></span>
+          <button id="logoutBtn" class="secondary-btn" type="button">Logout</button>
+        </div>
+      </header>
+
+      <section id="dashboardView" class="view active">
+        <div class="metric-grid">
+          <div class="metric"><span>Total Staff</span><strong id="metricTotalStaff">0</strong></div>
+          <div class="metric"><span>Working Today</span><strong id="metricWorkingToday">0</strong></div>
+          <div class="metric"><span>Upcoming Shifts</span><strong id="metricUpcomingShifts">0</strong></div>
+          <div class="metric"><span>Open Days</span><strong id="metricOpenShifts">0</strong></div>
+          <div class="metric"><span>Locations</span><strong id="metricLocations">0</strong></div>
+          <div class="metric"><span>Regular Hours</span><strong id="metricRegularHours">0</strong></div>
+          <div class="metric"><span>Overtime Hours</span><strong id="metricOvertimeHours">0</strong></div>
+          <div class="metric"><span>Total Weekly Hours</span><strong id="metricWeeklyHours">0</strong></div>
+          <div class="metric"><span>Total Monthly Hours</span><strong id="metricMonthlyHours">0</strong></div>
+        </div>
+        <div class="content-grid">
+          <article class="panel">
+            <h3 class="panel-title">Today's Schedule</h3>
+            <div id="todayScheduleList" class="mini-list"></div>
+          </article>
+          <article class="panel">
+            <h3 class="panel-title">Employees Near Overtime Limit</h3>
+            <div id="nearOvertimeList" class="mini-list"></div>
+          </article>
+          <article class="panel">
+            <h3 class="panel-title">Employees Currently in Overtime</h3>
+            <div id="overtimeList" class="mini-list"></div>
+          </article>
+          <article class="panel">
+            <h3 class="panel-title">Top Worked Employees</h3>
+            <div id="topWorkedList" class="mini-list"></div>
+          </article>
+          <article class="panel">
+            <h3 class="panel-title">Quick Actions</h3>
+            <div id="quickActionsList" class="mini-list"></div>
+          </article>
+          <article class="panel" style="grid-column:1 / -1">
+            <h3 class="panel-title">Recent Changes</h3>
+            <div id="recentChangesList" class="mini-list"></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="staffView" class="view">
+        <div class="toolbar print-hide" style="margin-bottom:12px">
+          <input id="staffSearch" class="input" placeholder="Search staff, role, email, phone, Athena user">
+          <select id="staffLocationFilter" class="select"></select>
+          <button id="addStaffBtn" class="primary-btn" type="button">Add Staff</button>
+          <button id="exportStaffCsvBtn" class="secondary-btn" type="button">Export CSV</button>
+          <span id="staffCountLabel" class="pill">0 shown</span>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Office Phone Number</th>
+                <th>Personal Phone Number</th>
+                <th>Job Title</th>
+                <th>Department</th>
+                <th>Office Location</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="staffTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="scheduleView" class="view">
+        <div class="schedule-layout">
+          <div>
+            <div class="toolbar schedule-controls print-hide" style="margin-bottom:12px">
+              <select id="scheduleLocation" class="select"></select>
+              <select id="scheduleMonth" class="select"></select>
+              <button id="refreshScheduleBtn" class="secondary-btn" type="button">Refresh from Google Sheet</button>
+              <button id="addNextMonthBtn" class="secondary-btn" type="button">Add Next Month</button>
+              <button id="printScheduleBtn" class="primary-btn" type="button">Print Schedule</button>
+              <button id="exportScheduleCsvBtn" class="secondary-btn" type="button">Export CSV</button>
+            </div>
+            <div class="calendar-preview">
+              <div id="scheduleCalendar" class="screen-calendar"></div>
+            </div>
+          </div>
+          <aside class="panel editor-card print-hide">
+            <h3 id="selectedDateTitle" class="selected-date-title">Select a date</h3>
+            <div class="assignment-helper">
+              <label class="field">
+                <span>Duty Need</span>
+                <select id="scheduleDutySelect" class="select"></select>
+              </label>
+              <label class="field">
+                <span>Add Staff</span>
+                <select id="scheduleStaffSelect" class="select"></select>
+              </label>
+              <button id="addScheduleStaffBtn" class="secondary-btn" type="button" disabled>Add Staff</button>
+            </div>
+            <div id="selectedStaffInsight" class="staff-insight" hidden></div>
+            <div class="recommendation-block">
+              <h4 class="subpanel-title">Recommended Staff</h4>
+              <div id="staffRecommendations" class="recommendation-list"></div>
+            </div>
+            <p class="help-text">One staff member or assignment per line.</p>
+            <textarea id="dayAssignments" class="textarea" placeholder="Staff name&#10;Staff name (time)"></textarea>
+            <div class="form-actions">
+              <button id="copyPreviousWeekBtn" class="secondary-btn" type="button" disabled>Copy Previous Week</button>
+              <button id="saveDayBtn" class="primary-btn" type="button" disabled>Save Day</button>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="hoursView" class="view">
+        <div class="toolbar print-hide" style="margin-bottom:12px">
+          <input id="hoursSearch" class="input" placeholder="Search employee, department, location">
+          <select id="hoursStatusFilter" class="select">
+            <option>All</option>
+            <option>Green</option>
+            <option>Warning</option>
+            <option>Overtime Alert</option>
+          </select>
+          <select id="hoursSort" class="select">
+            <option value="weeklyDesc">Weekly hours</option>
+            <option value="monthlyDesc">Monthly hours</option>
+            <option value="overtimeDesc">Overtime hours</option>
+            <option value="nameAsc">Name</option>
+          </select>
+          <input id="hoursStartDate" class="input" type="date">
+          <input id="hoursEndDate" class="input" type="date">
+          <button id="exportHoursCsvBtn" class="secondary-btn" type="button">Export CSV</button>
+        </div>
+        <div class="metric-grid" style="margin-bottom:12px">
+          <div class="metric"><span>Regular Hours</span><strong id="hoursRegularTotal">0</strong></div>
+          <div class="metric"><span>Overtime Hours</span><strong id="hoursOvertimeTotal">0</strong></div>
+          <div class="metric"><span>Total Scheduled</span><strong id="hoursScheduledTotal">0</strong></div>
+          <div class="metric"><span>Employees</span><strong id="hoursStaffCount">0</strong></div>
+        </div>
+        <div class="table-wrap" style="margin-bottom:14px">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Staff Name</th>
+                <th>Weekly Hours</th>
+                <th>Monthly Hours</th>
+                <th>Overtime Hours</th>
+                <th>Total Scheduled Hours</th>
+                <th>Current Status</th>
+              </tr>
+            </thead>
+            <tbody id="hoursTableBody"></tbody>
+          </table>
+        </div>
+        <article class="panel">
+          <div class="inline-controls" style="margin-bottom:10px">
+            <h3 class="panel-title" style="margin:0">Hours History</h3>
+            <span id="hoursHistoryCount" class="pill">0 history rows</span>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Staff Name</th>
+                  <th>Shift</th>
+                  <th>Hours</th>
+                  <th>Regular</th>
+                  <th>Overtime</th>
+                  <th>Location</th>
+                </tr>
+              </thead>
+              <tbody id="hoursHistoryBody"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section id="locationsView" class="view">
+        <div id="locationsGrid" class="location-grid"></div>
+      </section>
+
+      <section id="reportsView" class="view">
+        <div class="report-grid">
+          <article class="panel">
+            <h3 class="panel-title">Staff by Location</h3>
+            <div id="locationReport"></div>
+          </article>
+          <article class="panel">
+            <h3 class="panel-title">Staff by Department</h3>
+            <div id="departmentReport"></div>
+          </article>
+          <article class="panel" style="grid-column:1 / -1">
+            <h3 class="panel-title">Current Schedule Coverage</h3>
+            <div id="coverageReport"></div>
+          </article>
+          <article class="panel">
+            <h3 class="panel-title">Weekly Hours Report</h3>
+            <div id="weeklyHoursReport"></div>
+          </article>
+          <article class="panel">
+            <h3 class="panel-title">Overtime Report</h3>
+            <div id="overtimeReport"></div>
+          </article>
+          <article class="panel">
+            <h3 class="panel-title">Hours by Location</h3>
+            <div id="hoursByLocationReport"></div>
+          </article>
+          <article class="panel">
+            <h3 class="panel-title">Hours by Department</h3>
+            <div id="hoursByDepartmentReport"></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="settingsView" class="view">
+        <div class="content-grid">
+          <article class="panel">
+            <h3 class="panel-title">Branding</h3>
+            <div class="mini-row"><span>Clinic</span><strong id="settingsClinicName"></strong></div>
+            <div class="mini-row"><span>Powered by</span><strong id="settingsPoweredBy"></strong></div>
+            <div class="mini-row"><span>Help phone</span><strong id="settingsPhone"></strong></div>
+          </article>
+          <article class="panel">
+            <h3 class="panel-title">Data</h3>
+            <div class="mini-row"><span>Staff records</span><strong id="settingsStaffCount"></strong></div>
+            <div class="mini-row"><span>Schedule months</span><strong id="settingsScheduleCount"></strong></div>
+            <button id="resetLocalDataBtn" class="danger-btn" type="button">Reset Local Data</button>
+          </article>
+        </div>
+      </section>
+    </main>
+  </section>
+
+  <aside id="drawer" class="drawer" aria-hidden="true">
+    <div class="drawer-head">
+      <div>
+        <h3 id="drawerTitle" class="panel-title">Profile</h3>
+        <p id="drawerSubtitle" class="help-text"></p>
+      </div>
+      <button id="closeDrawerBtn" class="icon-btn" type="button" aria-label="Close">X</button>
+    </div>
+    <div id="drawerBody" class="drawer-body"></div>
+  </aside>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="config/app-config.js?v=20260630-sheet-authority"></script>
+  <script src="js/data.js?v=20260630-sheet-authority"></script>
+  <script src="js/app.js?v=20260630-sheet-authority"></script>
+</body>
+</html>
