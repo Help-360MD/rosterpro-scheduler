@@ -2279,7 +2279,7 @@
       date: dateKey,
       location: locationName,
       entries: entries
-    }, { attempts: 2, retry: true, timeout: 18000 }).then(function (result) {
+    }, { attempts: 1, retry: false, timeout: 40000 }).then(function (result) {
       applyScheduleMonthPayload(result || {}, { render: true, force: true });
       state.lastSyncAt = result && result.serverTime ? result.serverTime : new Date().toISOString();
       setSyncStatus("synced", lastUpdatedLabel(state.lastSyncAt));
